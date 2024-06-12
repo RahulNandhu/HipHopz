@@ -1,0 +1,236 @@
+{%extends 'base.html'%}
+{%load static%}
+{%block body%}
+<div style="background-color:#f2fafa;">
+    <div class="container-fluid mt-3" style="background-color:#c6eff7; width:95%;">
+        <div class="row p-2">
+            {% for i in cat%}
+            <div class="col-sm-2 rounded text-center" style="height:160px;">
+                <a href="{% url 'shop:category' i.id%}" style="text-decoration:none;" class="me-2 bg-light">
+                    <div class="card border-0">
+                        <img src="{{i.cover.url}}" class="card-img-top rounded transi" style="border-radius:20%;" width="98%" height="120px;">
+                        <div class="card-title text-dark fw-bold">{{i.name}}</div>
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="container carousel slide mt-3" data-bs-ride="carousel" id="home-carousel">
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#home-carousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#home-carousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+            <button type="button" data-bs-target="#home-carousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+            <button type="button" data-bs-target="#home-carousel" data-bs-slide-to="4" aria-label="Slide 4"></button>
+        </div>
+        <div class="carousel-inner">
+            {% for i in slides%}
+            <div class="carousel-item {% if forloop.counter == 1 %} active {%endif%}">
+                <img src="{{i.image.url}}" height="350px;" width="100%;">
+                <div class="carousel-caption d-none d-md-block text-dark">
+                    <h3>Get Exciting offer for all items</h3>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+<!--    Best of mobiles-->
+
+    <div>
+        <div class="row ms-2 mt-4 rounded" style="width:98%;">
+            <div class="col-md-7">
+                <div class="row" style="background-color:#dff0f7;">
+                    <h4 class="fw-bold">Best of Mobile Phones</h4>
+                    {% for i in mobiles %}
+                    <div class="col-md-3 pb-2 rounded">
+                        <a style="text-decoration:none;" href="{% url 'shop:details' i.id %}">
+                            <div class="card">
+                                <img src="{{ i.cover.url}}" class="card-img-top transi" width="100%;" height="160px;">
+                                <div class="card-body">
+                                    <h5 class="card-title text-center text-primary">{{i.name}}</h5>
+                                    <p class="card-text card_desc text-secondary">{{i.desc}}</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-md-5 border bg-light">
+                <a href="{% url 'shop:details' h_dis_mobile.id %}">
+                <h4 class="fw-bold text-primary text-center pt-2">SALE OF THE DAY</h4>
+                <div class="row">
+                    <div class="col-md-6">
+                        <img src="{{h_dis_mobile.cover.url}}" height="200px" width="100%;">
+                    </div>
+                    <div class="col-md-5 ps-4">
+                        <h4 class="text-dark">{{h_dis_mobile.name}}</h4>
+                        <h5 class="fw-bold">Sale is live now</h5>
+                        <p class="text-secondary">{{h_dis_mobile.desc}}</p>
+                        <p class="text-success fw-bold" style="line-height:0.8;">From <i class="fa-solid fa-indian-rupee-sign"></i> {{h_dis_mobile.offer}}</p>
+                        <p class="text-danger" style="line-height:0.7;">{{h_dis_mobile.discount}}% off</p>
+                    </div>
+                </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+<!--    NIKE-->
+
+     <div>
+        <div class="row ms-2 mt-4 rounded pt-2" style="background-color:#757876; width:99%;">
+            <div class="text-center" style="height:35px;">
+                <img src="{% static 'images/nike.png'%}" width="30px;" height="30px;"  style="display:inline;" class="pb-2">
+                <h4 class="fw-bold"  style="display:inline;">NIKE</h4>
+            </div>
+            {% for i in Nike %}
+            <div class="col-md-2 pb-2 rounded">
+                <a style="text-decoration:none;" href="{% url 'shop:details' i.id %}">
+                    <div class="card">
+                        <img src="{{ i.cover.url}}" class="card-img-top transi" width="100%;" height="200px;">
+                        <div class="card-body">
+                            <h5 class="card-title text-center text-primary">{{i.name}}</h5>
+                            <p class="card-text card_desc text-secondary">{{i.desc}}</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+<!--    Sarees-->
+
+    <div>
+        <div class="row ms-2 mt-3 rounded pt-2" style="background-color:#757876; width:99%;">
+                <h4 class="fw-bold" style="color:pink;">Trending In Sarees</h4>
+            {% for i in sarees %}
+            <div class="col-md-2 pb-2 rounded">
+                <a style="text-decoration:none;" href="{% url 'shop:details' i.id %}">
+                    <div class="card">
+                        <img src="{{ i.cover.url}}" class="card-img-top transi" width="100%;" height="200px;">
+                        <div class="card-body">
+                            <h5 class="card-title text-center text-primary">{{i.name}}</h5>
+                            <p class="card-text card_desc text-secondary">{{i.desc}}</p>
+                            <p class="text-success fw-bold" style="line-height:.3">Special Price</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+
+    <div class="row mt-2 ms-2" style="width:99%;">
+
+        <!--    You May Like-->
+
+        <div class="col-md-4 border border-2 box-element" style="background-color:#3ee8f7;">
+            <div class="row mt-2 mb-2">
+                <h4 class="text-center text-dark fw-bold">You May Like</h4>
+                {% for i in yml %}
+                <div class="col-md-6 mt-2">
+                    <a href="{% url 'shop:details' i.id%}">
+                        <div class="card">
+                            <img src="{{ i.cover.url }}" height="180px;" width="96%;" class="card-img-top transi">
+                            <div class="card-body">
+                                <h6 class="card-title">{{i.name}}</h6>
+                                <p class="card-text card_desc text-secondary">{{i.desc}}</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+
+        <!--    Suggested for you-->
+
+
+        <div class="col-md-4 border border-2 box-element">
+
+            <h4 class="text-center text-dark fw-bold">Suggested for you</h4>
+            <div class="row" style="height:360px;">
+                <div class="col-md-6 border-top" style="padding-top:30%;">
+                    <a href="{% url 'shop:details' sfy1.id%}">
+                        <div class="card border-0">
+                            <img src="{{sfy1.cover.url}}" width="100%;" height="180px;" class="card-img-top transi">
+                            <div class="card-body">
+                                <p class="card-title card_desc fw-bold">{{sfy1.desc}}</p>
+                                <h6 class="text-success card-text"> <i class="fa-solid fa-indian-rupee-sign "></i> {{sfy1.offer }} <span class="text-secondary text-decoration-line-through fst-italic">{{sfy1.price}}</span></h6>
+                                <p class="text-danger">{{sfy1.discount}}%off</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-6">
+                    {% for i in sfy2 %}
+                    <div class="row">
+                        <a href="{% url 'shop:details' i.id%}">
+                            <div class="card border-1">
+                                <img src="{{i.cover.url}}" height="150px;" width="100%;" class="transi card-img-top">
+                                <div class="card-body">
+                                    <p class="card-title card_desc fw-bold">{{i.desc}}</p>
+                                    <h6 class="text-success card-text"> <i class="fa-solid fa-indian-rupee-sign "></i> {{i.offer }} <span class="text-secondary text-decoration-line-through fst-italic">{{i.price}}</span></h6>
+                                    <p class="text-danger">{{i.discount}}% off</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-md-4 border border-2 box-element" style="background-color:#e8f229;">
+            <div class="row mt-2 mb-2">
+                <h4 class="text-center text-dark fw-bold">Recommended Items</h4>
+                {% for i in ri %}
+                <div class="col-md-6 mt-2">
+                    <a href="{% url 'shop:details' i.id%}">
+                        <div class="card">
+                            <img src="{{ i.cover.url }}" height="180px;" width="96%;" class="card-img-top transi">
+                            <div class="card-body">
+                                <h6 class="card-title">{{i.name}}</h6>
+                                <p class="card-text card_desc text-secondary">{{i.desc}}</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+    </div>
+
+<!--    Top Deals-->
+
+    <div>
+        <div class="row ms-2 mt-3 rounded pt-2" style="background-color:#cf6159; width:99%;">
+                <h4 class="fw-bold" style="color:white;">Best Selling Items</h4>
+            {% for i in td %}
+            <div class="col-md-2 pb-2 rounded">
+                <a style="text-decoration:none;" href="{% url 'shop:details' i.product.id %}">
+                    <div class="card">
+                        <img src="{{ i.product.cover.url}}" class="card-img-top transi" width="100%;" height="200px;">
+                        <div class="card-body">
+                            <h5 class="card-title text-center text-primary">{{i.product.name}}</h5>
+                            <p class="card-text card_desc text-secondary">{{i.product.desc}}</p>
+                            <p class="text-danger fw-bold" style="line-height:.3">only few left</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+</div>
+
+{%endblock%}

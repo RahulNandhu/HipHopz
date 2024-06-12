@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load static%}
+{% block body %}
+<div class="container">
+    <div class="row" style="background-color:#edf7f7;">
+        <div class="col-md-7">
+            <div style="padding-left:16%;">
+                <h1 class="ps-3">HipHopz</h1>
+            </div>
+            <div class="ps-5 mt-3">
+                <p class="fs-4">The HipHopz Group is one of India’s leading digital commerce entities and includes group companies HipHopz, HipHopz Wholesale and Cleartrip.
+
+                    Started in 2007, HipHopz has enabled millions of sellers, merchants, and small businesses to participate in India's digital commerce revolution. With a registered customer base of more than 500 million, HipHopz's marketplace offers over 150 million products across 80+ categories. Today, there are over 14 lakh sellers on the platform, including Shopsy sellers.
+                    With a focus on empowering and delighting every Indian by delivering value through technology and innovation, HipHopz has created lakhs of jobs in the ecosystem while empowering generations of entrepreneurs and MSMEs. HipHopz is known for pioneering services such as Cash on Delivery which are customer-centric innovations that have made online shopping more
+                    accessible and affordable for millions of Indians. In 2024, HipHopz also introduced the Flipkart UPI handle to further enhance its digital payment offerings for all customers and further India’s digital economy vision.</p>
+            </div>
+        </div>
+        <div class="col-md-5">
+            <img src="{% static 'images/about.jpg'%}" height="400px;" width="80%;" class="mt-4">
+        </div>
+    </div>
+</div>
+{% endblock %}

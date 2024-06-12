@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block body %}
+{% load static%}
+{% load crispy_forms_tags %}
+<div class="container-fluid row mt-2">
+
+    <div class="col-md-4">
+
+        <div class="pb-3" style="background-color:#e1eef7; border-radius:10px; position:relative">
+            <div>
+                <img src="{% static 'images/editprofile.jpg' %}" width="100%;" height="100px;" style="border-radius:10px 10px 0 0;">
+            </div>
+            <div>
+                <h4 class="mt-5" style="margin-left:28px;">{{user.username}}</h4>
+            </div>
+            <img src="{{user.profile.url}}" class="border border-3" height="86px;" width="86px;" style="border-radius:50%; position:absolute; top:57px; left:25px;">
+        </div>
+
+        <div class="mt-2" style="background-color:#e1eef7; border-radius:10px;">
+            <h5 class="mt-4 ms-2 text-center pt-3">Personal Information</h5>
+            <form method="post" class="mb-5 ms-3" enctype="multipart/form-data" style="width:90%;" onsubmit="Edit_Success(); return false;">
+                {% csrf_token %}
+                <div>
+                    <table>
+                        {{user_form|crispy}}
+                    </table>
+                </div>
+                <div>
+                    <input type="submit"  class="btn btn-primary mt-2" value="Post">
+                </div>
+
+            </form>
+        </div>
+    </div>
+    {% if success %}
+    <span id="success" style="display:none"> Your Profile has been updated successfully </span>
+    {% endif %}
+</div>
+{% endblock %}

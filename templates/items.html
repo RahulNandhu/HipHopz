@@ -1,0 +1,89 @@
+{% extends 'base.html'%}
+{% block body %}
+<div class="container-fluid text-center mt-2">
+    <div class="row mt-2 mb-2">
+        <div class="col-md-3 mt-2" style="background-color:#9e518c;">
+
+            <div class="discount-range mt-4" style="position:sticky; top:10px;">
+                <div class="filters" style="border-radius:10px; width:80%; background-color:#1995AD;">
+                    <h4 style="color:#E7E8D1;">Filters</h4>
+
+                    <div class="Discount-filter ms-2" style="text-align:left; color:#F1F1F2;">
+                        <form method="post" enctype="multipart/form-data">
+                            {% csrf_token%}
+                            <div class="mb-4">
+                                <div class="mb-2 filters">
+                                    <h6 class="text-dark">Discount</h6>
+                                    <label class="form-label">more than</label>
+                                    <input type="number" id="numberDiscountInput" name="min-discount" value="{{discount}}" max="100" min="0" style="width:35%;">
+                                </div>
+                                <input type="range" id="rangeDiscountInput" max="100" min="0" value="{{discount}}">
+                            </div>
+
+                            <div>
+                                <div class="filters">
+                                    <h6 class="text-dark">Price</h6>
+                                    <label class="form-label">Up to</label>
+                                    <input type="number" id="numberPriceInput" name="max_price" max="{{price_limit}}" value="{{fil_price}}" min="0" style="width:35%;">
+                                </div>
+                                <input type="range" id="rangePriceInput" min="0" max="{{price_limit}}" value="{{fil_price}}">
+                            </div>
+
+                            <div class="text-center pb-2">
+                                <button type="submit" class="btn" style="background-color:#A1D6E2;">apply</button>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+                <div style="width:90%; background-color:#bcf7f3; border-radius:10px;" class="mt-4 mb-2 border border-1">
+                    <h4 class="mb-2">In {{sub_category_filter_current.category.name}}</h4>
+                    <a>
+                        <div class="bg-warning mt-2 rounded-pill" style="width:99%;">
+                            <h6 class="p-1 fw-bold fst-italic">{{sub_category_filter_current.name}}</h6>
+                        </div>
+                    </a>
+                    {% for i in sub_category_filter %}
+                    <center>
+                    <a href="{% url 'shop:items' i.id %}" style="text-decoration:none;">
+                        <div class="bg-secondary text-dark mt-2 rounded-pill transi" style="width:95%;">
+                            <h6 class="p-1">{{i.name}}</h6>
+                        </div>
+                    </a>
+                    </center>
+                    {% endfor %}
+                </div>
+            </div>
+
+
+        </div>
+        <div class="col-md-9">
+            <div style="background-color:#ebf4fa;" class="p-2 mt-2">
+                <h5>{{sub_category_filter_current.name}}</h5>
+                <p class="text-secondary" style="text-align:left;">{{sub_category_filter_current.desc}}</p>
+            </div>
+            <div class="row mb-2">
+                {% for i in items%}
+                <div class="col-md-3 mt-4 mb-4">
+                    <div class="card text-center" style="height:450px">
+                        <a href="{% url 'shop:details' i.id%}" style="text-decoration:none;" class="text-dark">
+                            <div class="img-positioning">
+                                <img src="{{i.cover.url}}" height="300px;" width="100%;" class="card-img-top transi">
+                                <div class="wishlist-img"><i class="fa-regular fa-heart text-secondary"></i></div>
+                            </div>
+                            <div class="card-body" style="height:120px">
+                                <h5 class="card-title text-secondary card_desc">{{i.name}}</h5>
+                                <p class="card-text card_desc">{{i.desc}}</p>
+                                <p style="display:inline; padding-right:5px" class="fw-bold"><i class="fa-solid fa-indian-rupee-sign"></i> {{i.offer}}</p>
+                                <p style="display:inline;" class="text-decoration-line-through fst-italic">{{i.price}}</p>
+                                <p style="display:inline;" class="text-success fw-bold">{{i.discount}}% off</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

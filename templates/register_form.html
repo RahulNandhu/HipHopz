@@ -1,0 +1,65 @@
+{%extends 'base.html'%}
+{%block body%}
+{% load static %}
+<div class="container-fluid" style="background-image:url('{% static 'images/regis.jpg' %}');">
+    <h2 class="text-center text-white pb-3 pt-2">Welcome</h2>
+    <center>
+    <div style="width:60%;" class="reg-form text-white p-3 border">
+        <h6 class="pt-2 ps-3">Already have an account ? <a href="{% url 'shop:login'%}">login</a></h6>
+        {% if msg %}
+            <div class="alert alert-info mt-3">{{ msg }}</div>
+        {% endif %}
+        <form class="row g-3" enctype="multipart/form-data" method="post" id="registerForm">
+            {%csrf_token%}
+            <div class="col-md-6 form-group">
+                <label for="inputfname" class="form-label fw-bold">First Name</label>
+                <input type="text" class="form-control" id="inputfname" name="fname" placeholder="First name...">
+            </div>
+            <div class="col-md-6 from-group">
+                <label for="inputlname" class="form-label fw-bold">Last Name</label>
+                <input type="text" class="form-control" id="inputlname" name="lname" placeholder="Last name...">
+            </div>
+            <div class="col-12 from-group">
+                <label for="inputuname" class="form-label fw-bold">Username</label>
+                <input type="text" class="form-control" id="inputuname" name="uname" placeholder="Username...">
+            </div>
+            <div class="col-12 form-group">
+                <label for="inputpass" class="form-label fw-bold">Password</label>
+                <input type="password" id="inputpass" class="form-control" id="inputpass" name="pass" placeholder="Enter password...">
+            </div>
+            <div class="col-12 form-group">
+                <label for="inputcpass" class="form-label fw-bold">Confirm Password</label>
+                <input type="password" id="inputcpass" class="form-control" id="inputcpass" name="cpass" placeholder="Confirm password...">
+                <div id="passwordMatchMessage" style="display: none; color: red;">Passwords do not match</div>
+            </div>
+            <div class="col-md-6 form-group">
+                <label for="inputemail" class="form-label fw-bold">Email</label>
+                <input type="email" class="form-control" id="inputemail" name="email" placeholder="Enter Email...">
+            </div>
+            <div class="col-md-6 mb-2 form-group">
+                <label for="inputphone" class="form-label fw-bold">Phone</label>
+                <input type="phone" class="form-control" id="inputphone" name="phone" placeholder="Phone Number...">
+            </div>
+
+            <div class="col-md-6 form-group">
+                <label class="form-label fw-bold">Gender</label>
+                <select class="form-control" name="gender">
+                    <option value="M">Male</option>
+                    <option value="F">Female</option>
+                    <option value="N">Not Specifying</option>
+                </select>
+            </div>
+
+            <div class="col-md-6 mb-2 form-group">
+                <label for="inputprofile" class="form-label fw-bold">Profile Picture</label>
+                <input id="inputprofile" class="form-control" type="file" name="profile" required>
+            </div>
+
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary">Sign in</button>
+            </div>
+        </form>
+    </div>
+    </center>
+</div>
+{%endblock%}

@@ -1,0 +1,27 @@
+{% extends 'base.html'%}
+{% block body %}
+<div class="container-fluid text-center mt-2" style="width:70%">
+    <div class="row m-2">
+        <h4 class="text-danger">Search Results for :- {{word}}</h4>
+        {% for i in re%}
+        <div class="col-md-3 mt-4 mb-4">
+            <div class="card text-center" style="height:450px">
+                <a href="{% url 'shop:details' i.id%}" style="text-decoration:none;" class="text-dark">
+                    <div class="img-positioning">
+                        <img src="{{i.cover.url}}" height="300px;" width="100%;" class="card-img-top transi">
+                        <div class="wishlist-img"><i class="fa-regular fa-heart text-secondary"></i></div>
+                    </div>
+                    <div class="card-body" style="height:120px">
+                        <h5 class="card-title text-secondary card_desc">{{i.name}}</h5>
+                        <p class="card-text card_desc">{{i.desc}}</p>
+                        <p style="display:inline; padding-right:5px" class="fw-bold"><i class="fa-solid fa-indian-rupee-sign"></i> {{i.offer}}</p>
+                        <p style="display:inline;" class="text-decoration-line-through fst-italic">{{i.price}}</p>
+                        <p style="display:inline;" class="text-success fw-bold">{{i.discount}}% off</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

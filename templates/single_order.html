@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{%block body%}
+<div class="row">
+    <div class="col-md-8 ms-4 fw-bold">
+        <form enctype="multipart/form-data" method="post" style="width:80%;">
+            {%csrf_token%}
+            <div class="mb-3">
+                <label class="form_label">Address :</label>
+                <input class="form-control" name="address" type="text" placeholder="Address...">
+            </div>
+            <div class="mb-3">
+                <label class="form_label">Phone :</label>
+                <input class="form-control" name="phone" type="number" placeholder="Phone Number...">
+            </div>
+            <div class="mb-3">
+                <label class="form_label">Account Number :</label>
+                <input class="form-control" name="acc" type="number" placeholder="Account Number...">
+            </div>
+            <button class="btn btn-info" type="submit">Place order</button>
+        </form>
+    </div>
+    <div class="col-md-3 mt-2 border p-2">
+        <h4 class="text-center text-primary">Price Details</h4>
+        <div class="row pt-3">
+            <div class="col-md-7 ps-4 pt-2">
+                <h6>Price </h6><br>
+                <h6>Discount</h6><br>
+                <h6 class="fw-bold">Amount Payable</h6>
+            </div>
+            <div class="col-md-4 ps-4">
+                <h6 class="text-success"><i class="fa-solid fa-indian-rupee-sign"></i> {{Total}}</h6><br>
+                <h6 class="text-success"><i class="fa-solid fa-indian-rupee-sign"></i> {{Discount}}</h6><br>
+                <h6 class="text-primary fw-bold"><i class="fa-solid fa-indian-rupee-sign"></i> {{Bill}}</h6><br>
+            </div>
+        </div>
+    </div>
+    <h4>{{msg}}</h4>
+</div>
+{%endblock%}

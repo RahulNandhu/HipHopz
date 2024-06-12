@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% block body %}
+<div class="container-fluid">
+    <div class="row mt-3">
+        <div class="col-md-6">
+            {% for i in cart_items %}
+            <div class="row mt-3">
+                <div class="col-md-5">
+                    <img src="{{i.product.cover.url}}" width="100%;" height="300px;">
+                </div>
+                <div class="col-md-7 ps-3">
+                    <h4 class="text-secondary">{{i.product.name}}</h4>
+                    <h6 class="text-dark fw-bold">{{i.product.desc}}</h6>
+                    <h6 class="text-success fst-italic fs-5">offer price {{i.sub_total}} <span class="text-dark fs-6 fst-italic text-decoration-line-through">{{i.no_offer}}</span></h6>
+                    <h6 class="text-success fst-italic">save {{i.product.discount}}%</h6>
+                    <p class="text-danger">Order now and save upto <span class="fw-bold">{{i.Total_discount}}</span></p>
+
+                    <div class="border border-2 border-dark me-3 text-secondary text-center" style="width:148px; height:45px; font-size:15px; border-radius:16%;">
+                        <a class="btn btn-light" href="{% url 'cart:addtocart' i.product.id%}"><i class="fa-solid fa-plus ps-2 pe-2 fw-bold text-dark" style="display:inline;"></i></a>
+                        <h4 class="text-center pe-2" style="display:inline;">{{i.quantity}}</h4>
+                        <a class="btn btn-light" href="{% url 'cart:removecart' i.product.id%}"><i class="fa-solid fa-minus fw-bold text-dark" style="display:inline;"></i></a>
+                    </div>
+
+                    <a class="btn btn-warning mt-3" href="{% url 'cart:singleorder' i.product.id%}">Order</a>
+                    <a class="btn btn-warning mt-3" href="{% url 'cart:deletecart' i.product.id %}">remove from cart</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="col-md-4 ms-5">
+            <div style="width:100%; height:450px; background-color:#f0f7fc; position:sticky; top:10px;" class="border">
+                <div class="border" style="height:55px;">
+                    <h4 class="p-2 text-secondary">Price Details</h4>
+                </div>
+                <div>
+                    <div class="row">
+                        <div class="col-md-8 ps-4 pt-2">
+                            <h6>Price ({{Ni}} Item) </h6><br>
+                            <h6>Discount</h6><br>
+                            <h6>Delivery Chargers</h6>
+                        </div>
+                        <div class="col-md-3 ps-4">
+                            <h6><i class="fa-solid fa-indian-rupee-sign"></i> {{total}}</h6><br>
+                            <h6 class="text-success"><i class="fa-solid fa-indian-rupee-sign"></i> {{dis}}</h6><br>
+                            <h6><i class="fa-solid fa-indian-rupee-sign"></i> Free</h6><br>
+                        </div>
+                    </div>
+                        <div class="row mt-4">
+                            <div class="col-md-7 ps-4 text-primary">
+                                <h5>Total Amount</h5>
+                            </div>
+                            <div class="col-md-4 ps-4 text-primary">
+                                <h5><i class="fa-solid fa-indian-rupee-sign"></i> {{pa}}</h5>
+                            </div>
+                        </div>
+                        <div class="ps-4">
+                            <p class="text-success mt-5 fw-bolder">You will save  <i class="fa-solid fa-indian-rupee-sign"></i> {{dis}} on this order</p>
+                            <a class="btn btn-warning" href="{% url 'cart:order'%}">Place Order</a>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock%}

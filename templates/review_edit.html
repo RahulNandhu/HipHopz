@@ -1,0 +1,21 @@
+{% extends 'base.html'%}
+{% block body %}
+{% load crispy_forms_tags %}
+<div class="container-fluid row">
+    <div class="col-md-4" style="background-color:#46f0a6;">
+        <h4 style="text-align:left;" class="ms-2">Update your response</h4>
+        <form method="post" class="mb-5">
+            {% csrf_token %}
+            <div>
+                <table>
+                    {{review_form|crispy}}
+                </table>
+            </div>
+            <div>
+            <input type="submit"  class="btn btn-primary mt-2" value="Post">
+            </div>
+
+        </form>
+    </div>
+</div>
+{% endblock %}

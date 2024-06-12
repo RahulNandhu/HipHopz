@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+{%load static%}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Ephesis&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{%static 'css/base.css'%}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="{% static 'js/javascript.js'%}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+
+</head>
+<body>
+<div>
+    <nav class="navbar navbar-expand-lg bg-light navbar-light">
+        <a class="navbar-brand fw-bold text-dark ms-2" href="{%url 'shop:home'%}"><img src="{%static 'images/logo2.jpg'%}" style="opacity: 0.8;" width="50px;" height="50px;">HipHopz</a>
+        <div class="container-fluid">
+            <button type="button" class="navbar-toggler text-dark" data-bs-toggle="collapse" data-bs-target="#navtoggle" aria-controls="navtoggle">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navtoggle">
+                <ul class="navbar-nav">
+                    {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" href="{%url 'shop:home' %}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" href="{% url 'shop:About'%}">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" href="#">Contact</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" href="{% url 'cart:ordered'%}">Orders</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" href="{% url 'shop:logout' %}">Logout</a>
+                    </li>
+                    {%else%}
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" href="{%url 'shop:home' %}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" href="{% url 'shop:About'%}">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" href="#">Contact</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" href="{%url 'shop:register'%}">Register</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" href="{%url 'shop:login'%}">Login</a>
+                    </li>
+                    {%endif%}
+                </ul>
+            </div>
+        </div>
+
+        {%if user.is_authenticated%}
+        <form class="d-flex" action="{% url 'search:search' %}" method="post">
+            {%csrf_token%}
+            <input type="text" name="search" placeholder="Search" class="form-control" style="width:190px;">
+            <button type="submit" class="btn btn-success btn-outline-light">Search</button>
+        </form>
+        {%else%}
+        <form class="d-flex" action="{% url 'search:search_without' %}" method="post">
+            {%csrf_token%}
+            <input type="text" name="search" placeholder="Search" class="form-control" style="width:190px;">
+            <button type="submit" class="btn btn-success btn-outline-light">Search</button>
+        </form>
+        {% endif %}
+
+        {% if user.is_authenticated %}
+        <div class="d-flex p-2 dropdown" style="display:block;">
+            <button class="btn" type="button" id="UserDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                <div class="d-flex">
+                    <a style="text-decoration:none;" class="ps-2"><img src="{{user.profile.url}}" height="35px;" width="35px;" style="border-radius:50%;"></a><span class="fw-bold ms-1">{{user.username}}</span>
+                </div>
+            </button>
+
+            <ul class="dropdown-menu" aria-labelledby="UserDropdown">
+                <li><a class="dropdown-item" href="{% url 'shop:Edit_profile'%}"><i class="fa-regular fa-pen-to-square text-primary"></i> Edit Profile</a></li>
+                <li><a class="dropdown-item" href="{% url 'shop:logout'%}"><i class="fa-solid fa-power-off text-primary"></i> Logout</a></li>
+            </ul>
+
+            <a style="text-decoration:none;" href="{%url 'cart:usercart'%}" class="ps-2 pt-2"><i class="fa-solid fa-cart-shopping"><sup class="text-danger p-1">{{cart_count}}</sup></i></a>
+        </div>
+        {% else %}
+        <div class="d-flex p-2" style="display:block;">
+            <a href="#" style="text-decoration:none;" class="ps-2"><i class="fa-regular fa-user text-dark"></i></a><span>Guest</span>
+            <a style="text-decoration:none;" href="#" class="ps-2"><i class="fa-solid fa-cart-shopping"><sup class="text-danger p-1">0</sup></i></a>
+        </div>
+        {% endif %}
+    </nav>
+</div>
+
+
+{%block body%}
+{%endblock%}
+
+<!--footer-->
+
+<footer class="bg-dark text-white pt-5 mt-2">
+
+    <div class="container-fluid text-center text-md-left">
+        <div class="row text-center text-md-left">
+
+            <div class="col-md-3 col-xl-3 col-lg-3 mx-auto mt-2">
+                <h5 class="text-uppercase mb-4 text-warning font-weight-bold">HipHopz</h5>
+                <p style="text-align:justify;">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,</p>
+            </div>
+
+            <div class="col-md-2 col-xl-2 col-lg-2 mx-auto mt-3" style="text-align:justify;">
+                <h6 class="text-uppercase mb-4 text-secondary">About</h6>
+                <a href="#" class="text-white" style="text-decoration:none; display:block;">Contact us</a>
+                <a href="#" class="text-white" style="text-decoration:none; display:block;">About us</a>
+                <a href="#" class="text-white" style="text-decoration:none; display:block;">Careers</a>
+                <a href="#" class="text-white" style="text-decoration:none; display:block;">Corporate Information</a>
+
+            </div>
+
+            <div class="col-md-3 col-xl-3 col-lg-3 mx-auto mt-2" style="text-align:justify;">
+                <h6 class="text-uppercase mb-4 text-secondary font-weight-bold">Contact</h6>
+                <p>
+                    <a href="#" class="text-white" style="text-decoration:none;" ><i class="fa-solid fa-house text-white"></i> Kozhikode , Clt201782</a>
+                </p>
+                <p>
+                    <a href="#" class="text-white" style="text-decoration:none;"><i class="fa-solid fa-envelope text-white"></i> HipHopz@gmail.com</a>
+                </p>
+                <p>
+                    <a href="#" class="text-white" style="text-decoration:none;"><i class="fa-solid fa-phone text-white"></i> +91 1234567890</a>
+                </p>
+                <p>
+                    <a href="#" class="text-white" style="text-decoration:none;"><i class="fa-solid fa-print"></i> 0496 0098300</a>
+                </p>
+                <p>
+                    <i class="fa-brands fa-x-twitter text-white;"></i>  <i class="fa-brands fa-facebook text-white; ms-2"></i> <i class="fa-brands fa-youtube ms-2 text-white"></i>
+                </p>
+
+
+            </div>
+
+            <div class="col-md-3 col-xl-3 col-lg-3 mx-auto mt-2" style="text-align:justify; line-height: 0.8;">
+                <h6 class="text-uppercase mb-4 text-secondary">Registered Office Address</h6>
+                <p>HipHopz Private Limited,</p>
+                <p>Clove Embassy Tech village,</p>
+                <p>Outer Ring Road, Meppayil,</p>
+                <p>Calicut, 673503,</p>
+                <p>Kerala, India</p>
+                <p>CIN : M09763786323</p>
+                <p>Telephone <span class="text-primary">+91 6633878738</span></p>
+            </div>
+
+        </div>
+    </div>
+    <div class="text-center p-3">
+        <i class="fa-regular fa-copyright"></i> 2024 Copyright :
+        <a class="text-light" href="#" style="text-decoration: none;"> HipHopz.com</a>
+    </div>
+
+</footer>
+</body>
+</html>

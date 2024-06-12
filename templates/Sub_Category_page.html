@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block body %}
+    <div class="container-fluid">
+       <div class="row">
+           <div class="col-md-12">
+               {% for i in sc %}
+               <a href="{% url 'shop:items' i.id %}">
+               <div class="row mt-2 mb-3 bg-warning">
+                   <div class="col-md-9">
+                       <img src="{{i.cover.url}}" width="100%;" height="230px;" class="rounded-pill transi">
+                   </div>
+                   <div class="col-md-3 rounded-pill transi">
+                       <h1 class="text-center text-dark" style="padding-top:15%;">{{i.name}}</h1>
+                       <h6 class="text-center">Shop Now</h6>
+                   </div>
+               </div>
+               </a>
+               {% endfor %}
+           </div>
+       </div>
+    </div>
+
+</div>
+{%endblock%}

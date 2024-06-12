@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{%block body%}
+<div class="container-fluid mb-4">
+    {% for i in ite%}
+    <div class="row mt-3 ms-2">
+        <div class="col-md-9">
+            <div class="row box-element">
+                <div class="col-md-3 pe-2">
+                    <img class="rounded" src="{{i.product.cover.url}}" width="100%;" height="178px;">
+                </div>
+                <div class="col-md-5 pe-2">
+                    <h5 class="fw-bold">{{i.product.name}}</h5>
+                    <p class="fw-bold card_desc">{{i.product.desc}}</p>
+                    <p class="text-secondary">Ordered on : {{i.order_date}}</p>
+                    <p class="text-secondary">Delivery Status : {{i.delivery_status}}</p>
+                    <p class="text-primary">Qty : {{i.quantity}}</p>
+                </div>
+                <div class="col-md-3">
+                    <br>
+                    <h6 class="text-success"><i class="fa-solid fa-indian-rupee-sign"></i> {{i.MRP}}</h6>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{%endblock%}
