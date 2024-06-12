@@ -274,6 +274,7 @@ def About(request):
     return render(request,template_name='about.html')
 
 def Edit_Profile(request):
+    # edit profile
     user=request.user
     msg=''
     success=False
