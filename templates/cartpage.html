@@ -1,8 +1,10 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block body %}
 <div class="container-fluid">
     <div class="row mt-3">
         <div class="col-md-6">
+            {% if cart_items %}
             {% for i in cart_items %}
             <div class="row mt-4 box-element">
                 <div class="col-md-5 box-element">
@@ -28,6 +30,16 @@
                 </div>
             </div>
             {% endfor %}
+            {%else%}
+            <div>
+                <center>
+                    <img src="{% static 'images/empty_cart.png'%}" height="300px;" width="70%;">
+                    <h5 class="fw-bold">Your cart is empty</h5>
+                    <p class="fw-bold">Looks like you have not added anything to your cart. Go</p>
+                    <p class="fw-bold" style="line-height:0.1">ahead & Explore top Categories</p>
+                </center>
+            </div>
+            {% endif %}
         </div>
         <div class="col-md-4 ms-5">
             <div style="width:100%; height:450px; background-color:#f0f7fc; position:sticky; top:10px;" class="border">
