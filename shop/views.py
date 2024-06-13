@@ -14,101 +14,104 @@ import re
 
 def Home(request):
     user=request.user
-    cat=Category.objects.all()
-    sl=Slide.objects.all()
-    sub_mob=Sub_Category.objects.get(name='Mobiles')
-    m=Product.objects.filter(sub_category=sub_mob)[:4]
-    h_dis_mobile=m[0]
-    for i in m:
-        if h_dis_mobile.discount<i.discount:
-            h_dis_mobile=i
-    mob=Product.objects.filter(sub_category=sub_mob).exclude(id=h_dis_mobile.id)
-    if len(mob)>4:
-        mobiles=mob[:4]
+    if user.is_superuser:
+        return redirect('shop:admin_home')
     else:
-        mobiles=mob
+        cat=Category.objects.all()
+        sl=Slide.objects.all()
+        sub_mob=Sub_Category.objects.get(name='Mobiles')
+        m=Product.objects.filter(sub_category=sub_mob)[:4]
+        h_dis_mobile=m[0]
+        for i in m:
+            if h_dis_mobile.discount<i.discount:
+                h_dis_mobile=i
+        mob=Product.objects.filter(sub_category=sub_mob).exclude(id=h_dis_mobile.id)
+        if len(mob)>4:
+            mobiles=mob[:4]
+        else:
+            mobiles=mob
 
-    Ni=Product.objects.filter(name='Nike')
+        Ni=Product.objects.filter(name='Nike')
 
-    if len(Ni)>6:
-        Nike=Ni[:6]
-    else:
-        Nike=Ni
+        if len(Ni)>6:
+            Nike=Ni[:6]
+        else:
+            Nike=Ni
 
-    s=Sub_Category.objects.get(name='Sarees')
-    s_pro=Product.objects.filter(sub_category=s)
+        s=Sub_Category.objects.get(name='Sarees')
+        s_pro=Product.objects.filter(sub_category=s)
 
-    if len(s_pro)>6:
-        sarees=s_pro[:6]
-    else:
-        sarees=s_pro
+        if len(s_pro)>6:
+            sarees=s_pro[:6]
+        else:
+            sarees=s_pro
 
-    if request.user.is_authenticated:
-        if user.gender=='F':
-            sub_cat=Sub_Category.objects.get(name="Women's Tops")
-            you_may_like=Product.objects.filter(sub_category=sub_cat)
-        elif user.gender=='M':
-            sub_cat = Sub_Category.objects.get(name="Casual Shirts")
-            you_may_like = Product.objects.filter(sub_category=sub_cat)
+        if request.user.is_authenticated:
+            if user.gender=='F':
+                sub_cat=Sub_Category.objects.get(name="Women's Tops")
+                you_may_like=Product.objects.filter(sub_category=sub_cat)
+            elif user.gender=='M':
+                sub_cat = Sub_Category.objects.get(name="Casual Shirts")
+                you_may_like = Product.objects.filter(sub_category=sub_cat)
+            else:
+                sub_cat = Sub_Category.objects.get(name="Boy's and Girl's T-shirts")
+                you_may_like = Product.objects.filter(sub_category=sub_cat)
         else:
             sub_cat = Sub_Category.objects.get(name="Boy's and Girl's T-shirts")
             you_may_like = Product.objects.filter(sub_category=sub_cat)
-    else:
-        sub_cat = Sub_Category.objects.get(name="Boy's and Girl's T-shirts")
-        you_may_like = Product.objects.filter(sub_category=sub_cat)
 
-    if len(you_may_like)>4:
-        rn=random.randrange(0,len(you_may_like)-5)
-        yml=you_may_like[rn:rn+4]
-    else:
-        yml=you_may_like
-
-    sfy_sub=Sub_Category.objects.get(name='Mobiles')
-    sfy_p=Product.objects.filter(sub_category=sfy_sub)
-
-    sfy1=sfy_p[2]
-
-    if len(sfy_p)>3:
-        sfy2=sfy_p[:2]
-    else:
-        sfy2=sfy_p
-
-    all_products=Rec_items=Product.objects.all()
-    try:
-        s_word=Recent_search.objects.get(user=user)
-
-        if s_word.word.upper() == 'MOBILES' or s_word.word.upper() == 'MOBILE' or s_word.word.upper() == 'PHONE' or s_word.word.upper() == 'PHONES':
-            Rec_items_sub = Sub_Category.objects.get(name='Mobiles')
-            Rec_items = Product.objects.filter(sub_category=Rec_items_sub)
+        if len(you_may_like)>4:
+            rn=random.randrange(0,len(you_may_like)-5)
+            yml=you_may_like[rn:rn+4]
         else:
-            Rec_items = Product.objects.filter(Q(name__icontains=s_word.word) | Q(desc__icontains=s_word.word))
+            yml=you_may_like
 
+        sfy_sub=Sub_Category.objects.get(name='Mobiles')
+        sfy_p=Product.objects.filter(sub_category=sfy_sub)
 
-        if len(Rec_items)>4:
-            random_number=random.randrange(0,len(Rec_items)-5)
-            Rec_items = Rec_items[random_number:random_number+4]
+        sfy1=sfy_p[2]
 
-        elif len(all_products)>4:
-            Rec_items = Product.objects.all()[:4]
-
-        elif len(all_products)<4 and len(Rec_items)>0:
-            Rec_items=all_products
+        if len(sfy_p)>3:
+            sfy2=sfy_p[:2]
         else:
-            Rec_items=''
-    except:
+            sfy2=sfy_p
 
-        if len(all_products)>4:
-            Rec_items = Product.objects.all()[:4]
+        all_products=Rec_items=Product.objects.all()
+        try:
+            s_word=Recent_search.objects.get(user=user)
 
-        elif len(all_products)<4 and len(Rec_items)>0:
-            Rec_items=all_products
-        else:
-            Rec_items=''
+            if s_word.word.upper() == 'MOBILES' or s_word.word.upper() == 'MOBILE' or s_word.word.upper() == 'PHONE' or s_word.word.upper() == 'PHONES':
+                Rec_items_sub = Sub_Category.objects.get(name='Mobiles')
+                Rec_items = Product.objects.filter(sub_category=Rec_items_sub)
+            else:
+                Rec_items = Product.objects.filter(Q(name__icontains=s_word.word) | Q(desc__icontains=s_word.word))
 
-    top_deals=Total_orders.objects.all().order_by('quantity')[:6]
 
-    context={'cat':cat,'slides':sl,'mobiles':mobiles,'h_dis_mobile':h_dis_mobile,'Nike':Nike,'sarees':sarees,'yml':yml,'sfy1':sfy1,'sfy2':sfy2,'ri':Rec_items,'td':top_deals}
-    return render(request,template_name='Home.html',context=context)
+            if len(Rec_items)>4:
+                random_number=random.randrange(0,len(Rec_items)-5)
+                Rec_items = Rec_items[random_number:random_number+4]
+
+            elif len(all_products)>4:
+                Rec_items = Product.objects.all()[:4]
+
+            elif len(all_products)<4 and len(Rec_items)>0:
+                Rec_items=all_products
+            else:
+                Rec_items=''
+        except:
+
+            if len(all_products)>4:
+                Rec_items = Product.objects.all()[:4]
+
+            elif len(all_products)<4 and len(Rec_items)>0:
+                Rec_items=all_products
+            else:
+                Rec_items=''
+
+        top_deals=Total_orders.objects.all().order_by('quantity')[:6]
+
+        context={'cat':cat,'slides':sl,'mobiles':mobiles,'h_dis_mobile':h_dis_mobile,'Nike':Nike,'sarees':sarees,'yml':yml,'sfy1':sfy1,'sfy2':sfy2,'ri':Rec_items,'td':top_deals}
+        return render(request,template_name='Home.html',context=context)
 
 def U_register(request):
     msg=''

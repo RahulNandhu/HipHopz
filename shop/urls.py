@@ -4,8 +4,8 @@ from . import views
 app_name='shop'
 
 urlpatterns=[
-    path('home',views.Home,name='home'),
-    path('', views.Admin_home, name='admin_home'),
+    path('',views.Home,name='home'),
+    path('admin_home', views.Admin_home, name='admin_home'),
     path('register/',views.U_register,name='register'),
     path('login/', views.U_login, name='login'),
     path('logout/', views.U_logout, name='logout'),
