@@ -148,7 +148,6 @@ def U_login(request):
     global str_num
     str_num=str(num)
     l.append(str_num)
-    msg=''
 
     if request.method=='POST':
         capt=request.POST['captcha']
@@ -160,6 +159,9 @@ def U_login(request):
 
             user=authenticate(username=username,password=password)
             if user and user.is_superuser==True:
+                l.clear()
+                l.append(0)
+                login(request, user)
                 return Admin_home(request)
             elif user:
                 l.clear()
@@ -167,12 +169,12 @@ def U_login(request):
                 login(request,user)
                 return Home(request)
             else:
-                msg='Invalid password or username'
-                return render(request, template_name='login_form.html', context={'cap': str_num, 'msg': msg})
+                messages.warning(request,'Invalid password or username')
+                return render(request, template_name='login_form.html', context={'cap': str_num})
         else:
-            msg='Incorrect Captcha'
-            return render(request, template_name='login_form.html', context={'cap': str_num, 'msg': msg})
-    return render(request,template_name='login_form.html',context={'cap':str_num,'msg':msg})
+            messages.warning(request,'Incorrect Captcha')
+            return render(request, template_name='login_form.html', context={'cap': str_num})
+    return render(request,template_name='login_form.html',context={'cap':str_num})
 
 
 

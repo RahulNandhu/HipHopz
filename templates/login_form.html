@@ -19,7 +19,13 @@
             <h2 class="fw-bold text-light">Login</h2>
             <form class="mb-2 mt-2" method="post" enctype="multipart/form-data" style="width:98%;">
                 {%csrf_token%}
-                <p class="text-danger">{{msg}}</p>
+<!--                <p class="text-danger">{{msg}}</p>-->
+                {% for msg in messages %}
+                    <div class="alert alert-warning" role="alert">
+                        {{msg}}
+                    </div>
+                {% endfor %}
+
                 <div class="mb-2">
                     <label class="form-label label-box fw-bold"></label>
                     <input class="form-control input-box" type="text" name="Uname" placeholder="Username">
