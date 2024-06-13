@@ -23,7 +23,7 @@
                 {% if user.is_authenticated %}
 
                 <a class="btn btn-warning" href="{%url 'cart:addtocart' product.id%}">Add to cart</a>
-                <a class="btn btn-warning" href="{%url 'cart:singleorder' product.id %}">buy now</a>
+                <a class="btn btn-warning" href="{%url 'cart:buy_now' product.id %}">buy now</a>
                 {% endif %}
                 <p class="text-danger mt-4">{{product.stock}} stock available now</p>
             </div>
@@ -36,11 +36,11 @@
         </div>
         <div class="col-md-4">
             <h5>Give Your Feedback</h5>
-            {% for msg in messages %}
+            {% if msg%}
             <div class="alert alert-success" role="alert">
                 {{msg}}
             </div>
-            {% endfor %}
+            {% endif %}
             <form method="post" class="mb-5">
                 {% csrf_token %}
                 <div class="form-group required">

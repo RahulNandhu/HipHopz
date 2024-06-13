@@ -9,6 +9,7 @@ from django.db.models import Max
 from django.http import HttpResponseRedirect
 from .forms import ReviewForm,EditProfileForm
 from django. contrib import messages
+from django.contrib.auth.decorators import login_required
 import re
 # Create your views here.
 
@@ -169,15 +170,15 @@ def U_login(request):
                 login(request,user)
                 return Home(request)
             else:
-                messages.warning(request,'Invalid password or username')
-                return render(request, template_name='login_form.html', context={'cap': str_num})
+                msg='Invalid password or username'
+                return render(request, template_name='login_form.html', context={'cap': str_num,'msg':msg})
         else:
-            messages.warning(request,'Incorrect Captcha')
-            return render(request, template_name='login_form.html', context={'cap': str_num})
+            msg='Incorrect Captcha'
+            return render(request, template_name='login_form.html', context={'cap': str_num,'msg':msg})
     return render(request,template_name='login_form.html',context={'cap':str_num})
 
 
-
+@login_required
 def U_logout(request):
     logout(request)
     return U_login(request)
@@ -214,6 +215,7 @@ def Details(request,p):
     u = request.user
     re=Product.objects.filter(sub_category=pr.sub_category).exclude(id=p)
     trending=Total_orders.objects.all().order_by('quantity').exclude(product_id=p)
+    msg=''
     try:
         user_review = Reviews.objects.get(product=pr, user=u)
     except:
@@ -241,9 +243,9 @@ def Details(request,p):
         if flag == False:
             rev = Reviews.objects.create(user=u, product=pr, rating=rating, review=review, likes=0)
             rev.save()
-            messages.success(request,'Review added successfully')
+            msg='Review added successfully'
         else:
-            messages.success(request,'A review already exists; you can edit your response.')
+            msg='A review already exists; you can edit your response.'
 
 
     num_of_reviews=Reviews.objects.filter(product=pr)
@@ -258,11 +260,13 @@ def Details(request,p):
     offer=int(pr.price)-round((pr.price*(100-pr.discount))/100)
 
 
-    context={'product':pr,'rr':len(num_of_reviews),'offer':offer,'reviews':reviews,'ri':related_items,'tr':trending,'u_review':user_review}
+    context={'product':pr,'rr':len(num_of_reviews),'offer':offer,'reviews':reviews,'ri':related_items,'tr':trending,'u_review':user_review,'msg':msg}
     return render(request,template_name='detail.html',context=context)
 
 def Admin_home(request):
     return redirect('admin:index')
+
+@login_required
 def Edit_Review(request,p):
     review=Reviews.objects.get(id=p)
 
@@ -270,6 +274,7 @@ def Edit_Review(request,p):
         review_form=ReviewForm(request.POST,request.FILES,instance=review)
         if review_form.is_valid():
             review_form.save()
+            msg='Review Updated successfully'
             return Details(request,p=review.product.id)
 
     review_form=ReviewForm(instance=review)
@@ -279,6 +284,7 @@ def Edit_Review(request,p):
 def About(request):
     return render(request,template_name='about.html')
 
+@login_required
 def Edit_Profile(request):
     # edit profile
     user=request.user

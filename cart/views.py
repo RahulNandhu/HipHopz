@@ -1,10 +1,12 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from .models import UserCart,Bank,Order,Total_orders
 from shop.models import Product,CustomUser
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
-
+@login_required
 def Cart(request):
     user=request.user
     pro=UserCart.objects.filter(user=user)
@@ -19,6 +21,7 @@ def Cart(request):
     pa+=(t-d)
     return render(request,template_name='cartpage.html',context={'cart_items':pro,'total':t,'dis':d,'pa':pa,'Ni':Ni})
 
+@login_required
 def Addtocart(request,p):
     pr=Product.objects.get(id=p)
     user=request.user
@@ -37,6 +40,7 @@ def Addtocart(request,p):
     return Cart(request)
 
 
+@login_required
 def Removecart(request,p):
     user=request.user
     prod=Product.objects.get(id=p)
@@ -55,6 +59,7 @@ def Removecart(request,p):
     except:
         return Cart(request)
 
+@login_required
 def Deletecart(request,p):
     user=request.user
     prod=Product.objects.get(id=p)
@@ -68,6 +73,7 @@ def Deletecart(request,p):
         return Cart(request)
 
 
+@login_required
 def Single_order(request,p):
     item=Product.objects.get(id=p)
     u=request.user
@@ -86,7 +92,6 @@ def Single_order(request,p):
             if acco.Balance >=B:
                 acco.Balance=acco.Balance-B
                 acco.save()
-                msg='Order Placed Successfully'
                 order=Order.objects.create(user=u,product=item,quantity=ca.quantity,MRP=T,D_price=B,order_status='Ordered',phone=phone,address=address)
                 order.save()
                 try:
@@ -97,7 +102,6 @@ def Single_order(request,p):
                     elif u.gender=='F':
                         t_order.f_user +=1
                     t_order.save()
-                    return Ordered_items(request)
                 except:
                     if u.gender=='M':
                         t_order = Total_orders.objects.create(product=item,quantity=ca.quantity,m_user=1)
@@ -110,6 +114,7 @@ def Single_order(request,p):
                         t_order.save()
 
                 ca.delete()
+                msg='Order placed successfully'
                 return Ordered_items(request)
             else:
                 msg='Insufficient balance'
@@ -151,6 +156,8 @@ def Single_order(request,p):
     return render(request,template_name='single_order.html',context={'Bill':B,'Total':T,'Discount':D,'msg':msg})
 
 
+
+@login_required
 def Orders(request):
     u=request.user
     ca = UserCart.objects.filter(user=u)
@@ -179,7 +186,7 @@ def Orders(request):
                     To = (i.product.price * i.quantity)
                     Di = i.quantity * (round(i.product.price * ((i.product.discount) / 100)))
                     B=To-Di
-                    msg = 'Order Placed Successfully'
+                    # msg = 'Order Placed Successfully'
                     order = Order.objects.create(user=u, product=i.product, quantity=i.quantity, MRP=To, D_price=B,order_status='Ordered', phone=phone, address=address)
                     order.save()
 
@@ -202,18 +209,79 @@ def Orders(request):
                             t_order = Total_orders.objects.create(product=i.product, quantity=i.quantity)
                             t_order.save()
                 ca.delete()
+                messages.success(request,'order placed successfully')
+                return redirect('cart:ordered')
             else:
                 msg='Insufficient Balance'
+                messages.error(request,'Insufficient Balance')
         except:
             msg='Invalid Bank details'
+            messages.error(request,'Invalid Bank details')
 
 
     return render(request,template_name='order_page.html',context={'Total':T,'Dis':D,'Bill':B,'Ni':NI,'msg':msg})
 
 
+@login_required
 def Ordered_items(request):
     u=request.user
-    ite=Order.objects.filter(user=u)
+    ite=Order.objects.filter(user=u).order_by('-order_date')
     return render(request,template_name='Ordered.html',context={'ite':ite})
+
+@login_required
+def Buy_now(request,p):
+    user=request.user
+    item=Product.objects.get(id=p)
+    discout=round(item.price*item.discount/100)
+    discout_price=item.price-discout
+    msg=''
+    if request.method=='POST':
+        bank=request.POST['acc']
+        phone = request.POST['phone']
+        address = request.POST['address']
+
+        try:
+            account=Bank.objects.get(Account_number=bank)
+        # if account:
+
+            if account.Balance > discout_price:
+                account.Balance -=item.price
+                account.save()
+                place_order = Order.objects.create(user=user, product=item, quantity=1, MRP=item.price,
+                                                   D_price=discout_price, order_status='Ordered', phone=phone,
+                                                   address=address)
+                place_order.save()
+                item.stock -=1
+                item.save()
+
+                try:
+                    t_order=Total_orders.objects.get(product=item)
+                    t_order.quantity +=1
+                    if user.gender=='M':
+                        t_order.m_user +=1
+                    elif user.gender=='F':
+                        t_order.f_user +=1
+                    t_order.save()
+                    return Ordered_items(request)
+                except:
+                    if user.gender=='M':
+                        t_order = Total_orders.objects.create(product=item,quantity=1,m_user=1)
+                        t_order.save()
+                    elif user.gender=='F':
+                        t_order = Total_orders.objects.create(product=item,quantity=1,f_user=1)
+                        t_order.save()
+                    else:
+                        t_order = Total_orders.objects.create(product=item, quantity=1)
+                        t_order.save()
+
+                return Ordered_items(request)
+            else:
+                msg='Insufficient balance'
+        except:
+            msg='Invalid Bank details'
+
+
+    context={'item':item,'Dis':discout,'discount':discout_price,'msg':msg}
+    return render(request,template_name='buy_now.html',context=context)
 
 

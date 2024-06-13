@@ -10,5 +10,6 @@ urlpatterns=[
     path('singleorder/<int:p>', views.Single_order, name='singleorder'),
     path('order',views.Orders,name='order'),
     path('ordered',views.Ordered_items,name='ordered'),
+    path('buy_now/<int:p>',views.Buy_now,name='buy_now'),
 
 ]
