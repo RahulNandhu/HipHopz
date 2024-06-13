@@ -1,0 +1,12 @@
+*.py linguist-language=Python
+*.js linguist-language=JavaScript
+*.html linguist-language=HTML
+
+# Ignore minified files
+*.min.js linguist-vendored
+
+# Ignore dependencies
+/vendor/* linguist-vendored
+
+# Treat documentation as generated
+/docs/* linguist-generated
