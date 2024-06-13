@@ -4,9 +4,11 @@
     <div class="row mt-3">
         <div class="col-md-6">
             {% for i in cart_items %}
-            <div class="row mt-3">
-                <div class="col-md-5">
-                    <img src="{{i.product.cover.url}}" width="100%;" height="300px;">
+            <div class="row mt-4 box-element">
+                <div class="col-md-5 box-element">
+                    <a href="{% url 'shop:details' i.product.id %}">
+                        <img class="transi" src="{{i.product.cover.url}}" width="100%;" height="300px;">
+                    </a>
                 </div>
                 <div class="col-md-7 ps-3">
                     <h4 class="text-secondary">{{i.product.name}}</h4>

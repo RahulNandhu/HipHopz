@@ -156,7 +156,9 @@ def U_login(request):
         if capt==l[-2]:
 
             user=authenticate(username=username,password=password)
-            if user:
+            if user and user.is_superuser==True:
+                return Admin_home(request)
+            elif user:
                 l.clear()
                 l.append(0)
                 login(request,user)
@@ -255,8 +257,7 @@ def Details(request,p):
     return render(request,template_name='detail.html',context=context)
 
 def Admin_home(request):
-    return render(request,template_name='admin_home.html')
-
+    return redirect('admin:index')
 def Edit_Review(request,p):
     review=Reviews.objects.get(id=p)
 
