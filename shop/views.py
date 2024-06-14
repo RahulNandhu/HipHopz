@@ -181,7 +181,7 @@ def U_login(request):
 @login_required
 def U_logout(request):
     logout(request)
-    return U_login(request)
+    return Home(request)
 
 
 def Sub_cate(request,p):

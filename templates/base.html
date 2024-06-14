@@ -30,7 +30,7 @@
                 <ul class="navbar-nav">
                     {% if user.is_authenticated %}
                     <li class="nav-item">
-                        <a class="nav-link text-dark" href="{%url 'shop:home' %}">Home</a>
+                        <a class="nav-link text-dark transi" href="{%url 'shop:home' %}">Home</a>
                     </li>
 
                     <li class="nav-item dropdown">
@@ -39,36 +39,46 @@
                       </a>
                       <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                           {% for i in Category_links %}
-                          <li><a class="dropdown-item" href="{% url 'shop:category' i.id %}">{{i.name}}</a></li>
+                          <li class="transi"><a class="dropdown-item" href="{% url 'shop:category' i.id %}">{{i.name}}</a></li>
                           {% endfor %}
                       </ul>
                     </li>
 
-                    <li class="nav-item">
+                    <li class="nav-item transi">
                         <a class="nav-link text-dark" href="{% url 'shop:About'%}">About</a>
                     </li>
 
-                    <li class="nav-item">
+                    <li class="nav-item transi">
                         <a class="nav-link text-dark" href="{% url 'cart:ordered'%}">Orders</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item transi">
                         <a class="nav-link text-dark" href="{% url 'shop:logout' %}">Logout</a>
                     </li>
                     {%else%}
-                    <li class="nav-item">
+                    <li class="nav-item transi">
                         <a class="nav-link text-dark" href="{%url 'shop:home' %}">Home</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item dropdown transi">
+                      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown2" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Categories
+                      </a>
+                      <ul class="dropdown-menu" aria-labelledby="navbarDropdown2">
+                          {% for i in Category_links %}
+                          <li class="transi"><a class="dropdown-item" href="{% url 'shop:category' i.id %}">{{i.name}}</a></li>
+                          {% endfor %}
+                      </ul>
+                    </li>
+                    <li class="nav-item transi">
                         <a class="nav-link text-dark" href="{% url 'shop:About'%}">About</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item transi">
                         <a class="nav-link text-dark" href="#">Contact</a>
                     </li>
 
-                    <li class="nav-item">
+                    <li class="nav-item transi">
                         <a class="nav-link text-dark" href="{%url 'shop:register'%}">Register</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item transi">
                         <a class="nav-link text-dark" href="{%url 'shop:login'%}">Login</a>
                     </li>
                     {%endif%}
