@@ -9,5 +9,4 @@
 # Ignore dependencies
 /vendor/* linguist-vendored
 
-# Treat documentation as generated
 /docs/* linguist-generated
