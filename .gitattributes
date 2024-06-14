@@ -1,12 +1,18 @@
-*.py linguist-language=Python
-*.js linguist-language=JavaScript
+# .gitattributes
+
+# Exclude documentation files
+docs/* linguist-documentation
+
+# Exclude vendor libraries
+vendor/* linguist-vendored
+
+# Exclude build artifacts
+build/* linguist-generated
+
+# Mark generated files
+*.min.js linguist-generated
+*.compiled linguist-generated
+
+# Set language for specific files
+*.md linguist-language=Markdown
 *.html linguist-language=HTML
-*.css linguist-language=CSS
-
-# Ignore minified files
-*.min.js linguist-vendored
-
-# Ignore dependencies
-/vendor/* linguist-vendored
-
-/docs/* linguist-generated
