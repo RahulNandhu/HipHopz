@@ -4,7 +4,7 @@
 {% load crispy_forms_tags %}
 <div class="container-fluid row mt-2">
 
-    <div class="col-md-5" style="padding-left:10%;">
+    <div class="col-md-6 pt-3" style="padding-left:8%; padding-right:8%; background-image:url('{% static 'images/edit_background.jpg' %}')">
 
         <div class="pb-3" style="background-color:#e1eef7; border-radius:10px; position:relative">
             <div>
@@ -25,17 +25,17 @@
                         {{user_form|crispy}}
                     </table>
                 </div>
-                <div>
+                <div class="pb-2">
                     <input type="submit"  class="btn btn-primary mt-2" value="Post">
                 </div>
 
             </form>
         </div>
     </div>
-    <div class="col-md-4">
-        <div class="pt-2 text-center pb-3" style="background-color:#fc9790;">
-            <p class="ms-2">Do you want to change your password</p>
-            <a class="btn btn-primary ms-2" href="#">Change password</a>
+
+    <div class="col-md-6 text-center" style="background-color:#f7f7f7;">
+        <div style="position:sticky; top:100px;">
+            <img style="padding-top:10%; padding-bottom:50px;" src="{% static 'images/edit_pro.png' %}">
         </div>
     </div>
     {% if success %}
