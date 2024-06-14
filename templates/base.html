@@ -58,16 +58,7 @@
                     <li class="nav-item transi">
                         <a class="nav-link text-dark" href="{%url 'shop:home' %}">Home</a>
                     </li>
-                    <li class="nav-item dropdown transi">
-                      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown2" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Categories
-                      </a>
-                      <ul class="dropdown-menu" aria-labelledby="navbarDropdown2">
-                          {% for i in Category_links %}
-                          <li class="transi"><a class="dropdown-item" href="{% url 'shop:category' i.id %}">{{i.name}}</a></li>
-                          {% endfor %}
-                      </ul>
-                    </li>
+
                     <li class="nav-item transi">
                         <a class="nav-link text-dark" href="{% url 'shop:About'%}">About</a>
                     </li>
